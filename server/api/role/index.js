@@ -59,6 +59,29 @@ function role({ app, connection }) {
       });
     });
   });
+  app.post("/api/updaterole",(req,res,next) => {
+      const sql = "update role set descs = ? where id = ?"
+      let updateRole = [
+          req.body.descs,
+          req.body.id
+      ]
+      connection.query(sql,updateRole,(err,results) => {
+        if(err) {
+            console.log(err);
+            
+            return res.json({
+                code: -2,
+                message: '修改失败',
+                affextedRows: 0
+            })
+        }
+        res.json({
+            code: 200,
+            data: results,
+            affextedRows: results.affextedRows
+        })
+      })
+  })
 }
 
 module.exports = role;
